@@ -1,630 +1,542 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TYPE Vec3
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+TYPE vec3
     x AS FLOAT
     y AS FLOAT
     z AS FLOAT
 ENDTYPE
 
-TYPE iVec3
+FUNCTION vec3(X AS FLOAT, Y AS FLOAT, Z AS FLOAT)
+    Result AS vec3
+    Result.x = X
+    Result.y = Y
+    Result.z = Z
+ENDFUNCTION Result
+
+//==============================================================================================================================================================
+TYPE ivec3
     x AS INTEGER
     y AS INTEGER
     z AS INTEGER
 ENDTYPE
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  Constructors:
-FUNCTION vec3(FltX AS FLOAT, FltY AS FLOAT, FltZ AS FLOAT)
-    Result AS Vec3
-    Result.x = FltX
-    Result.y = FltY
-    Result.z = FltZ
+FUNCTION ivec3(X AS INTEGER, Y AS INTEGER, Z AS INTEGER)
+    Result AS ivec3
+    Result.x = X
+    Result.y = Y
+    Result.z = Z
 ENDFUNCTION Result
 
-FUNCTION ivec3(IntX AS INTEGER, IntY AS INTEGER, IntZ AS INTEGER)
-    Result AS iVec3
-    Result.x = IntX
-    Result.y = IntY
-    Result.z = IntZ
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//==============================================================================================================================================================
 FUNCTION InitializeVector3()
-    // AGK does not support default values for UserTypes nor UserType Constants.
-    GLOBAL Zero3     AS Vec3 : Zero3     = vec3(0.0, 0.0, 0.0)
-    GLOBAL Axis3_X   AS Vec3 : Axis3_X   = vec3(1.0, 0.0, 0.0)
-    GLOBAL Axis3_Y   AS Vec3 : Axis3_Y   = vec3(0.0, 1.0, 0.0)
-    GLOBAL Axis3_Z   AS Vec3 : Axis3_Z   = vec3(0.0, 0.0, 1.0)
+    //  AGK does not support default values for UserTypes.
+    GLOBAL Zero3     AS vec3: Zero3     = vec3(0.0, 0.0, 0.0)
+    GLOBAL Axis3_X   AS vec3: Axis3_X   = vec3(1.0, 0.0, 0.0)
+    GLOBAL Axis3_Y   AS vec3: Axis3_Y   = vec3(0.0, 1.0, 0.0)
+    GLOBAL Axis3_Z   AS vec3: Axis3_Z   = vec3(0.0, 0.0, 1.0)
 
-    GLOBAL Axis3_XY  AS Vec3 : Axis3_XY  = vec3(Sqrt2Rcp, Sqrt2Rcp,      0.0)
-    GLOBAL Axis3_YZ  AS Vec3 : Axis3_YZ  = vec3(     0.0, Sqrt2Rcp, Sqrt2Rcp)
-    GLOBAL Axis3_XZ  AS Vec3 : Axis3_XZ  = vec3(Sqrt2Rcp,      0.0, Sqrt2Rcp)
+    GLOBAL Axis3_XY  AS vec3: Axis3_XY  = vec3(Sqrt2Rcp, Sqrt2Rcp,      0.0)
+    GLOBAL Axis3_YZ  AS vec3: Axis3_YZ  = vec3(     0.0, Sqrt2Rcp, Sqrt2Rcp)
+    GLOBAL Axis3_XZ  AS vec3: Axis3_XZ  = vec3(Sqrt2Rcp,      0.0, Sqrt2Rcp)
 
-    GLOBAL Axis3_XYZ AS Vec3 : Axis3_XYZ = vec3(Sqrt3Rcp, Sqrt3Rcp, Sqrt3Rcp)
+    GLOBAL Axis3_XYZ AS vec3: Axis3_XYZ = vec3(Sqrt3Rcp, Sqrt3Rcp, Sqrt3Rcp)
 ENDFUNCTION
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                    Arithmetic Operators
+FUNCTION add3( A AS vec3, B REF AS vec3):  A.x=(A.x+B.x)  :  A.y=(A.y+B.y)  :  A.z=(A.z+B.z)  :ENDFUNCTION A
+FUNCTION add3f(A AS vec3, B    AS FLOAT):  A.x=(A.x+B  )  :  A.y=(A.y+B  )  :  A.z=(A.z+B  )  :ENDFUNCTION A
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION Print3(Label AS STRING, PrintMe REF AS Vec3, PadLeft AS INTEGER, TruncRight AS INTEGER)
-    Print(Label + padstr(PrintMe.x, PadLeft, TruncRight)+" "+padstr(PrintMe.y, PadLeft, TruncRight)+" "+padstr(PrintMe.z, PadLeft, TruncRight))
-ENDFUNCTION
+FUNCTION sub3( A AS vec3, B REF AS vec3):  A.x=(A.x-B.x)  :  A.y=(A.y-B.y)  :  A.z=(A.z-B.z)  :ENDFUNCTION A
+FUNCTION sub3f(A AS vec3, B    AS FLOAT):  A.x=(A.x-B  )  :  A.y=(A.y-B  )  :  A.z=(A.z-B  )  :ENDFUNCTION A
 
+FUNCTION mul3( A AS vec3, B REF AS vec3):  A.x=(A.x*B.x)  :  A.y=(A.y*B.y)  :  A.z=(A.z*B.z)  :ENDFUNCTION A
+FUNCTION mul3f(A AS vec3, B    AS FLOAT):  A.x=(A.x*B  )  :  A.y=(A.y*B  )  :  A.z=(A.z*B  )  :ENDFUNCTION A
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION add3(VecA REF AS Vec3, VecB REF AS Vec3) // 'VecA' + 'VecB'
-    Result AS Vec3
-    Result.x = VecA.x + VecB.x
-    Result.y = VecA.y + VecB.y
-    Result.z = VecA.z + VecB.z
-ENDFUNCTION Result
+FUNCTION div3( A AS vec3, B REF AS vec3):  A.x=(A.x/B.x)  :  A.y=(A.y/B.y)  :  A.z=(A.z/B.z)  :ENDFUNCTION A
+FUNCTION div3f(A AS vec3, B    AS FLOAT):  A.x=(A.x/B  )  :  A.y=(A.y/B  )  :  A.z=(A.z/B  )  :ENDFUNCTION A
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                       "Dot" Product
+FUNCTION dot3(A REF AS vec3, B REF AS vec3):ENDFUNCTION (A.x*B.x + A.y*B.y + A.z*B.z)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION add3f(VecA REF AS Vec3, FltA AS FLOAT) // 'VecA' + 'FltA'
-    Result AS Vec3
-    Result.x = VecA.x + FltA
-    Result.y = VecA.y + FltA
-    Result.z = VecA.z + FltA
-ENDFUNCTION Result
+//==============================================================================================================================================================
+//                                                                      "Cross" Product
+FUNCTION crs3(A REF AS vec3, B REF AS vec3): R AS vec3:  R.x=(A.y*B.z - A.z*B.y)  :  R.y=(A.z*B.x - A.x*B.z)  :  R.z=(A.x*B.y - A.y*B.x)  :ENDFUNCTION R
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+FUNCTION inv3(A AS vec3):  A.x=(   -A.x)  :  A.y=(   -A.y)  :  A.z=(   -A.z)  :ENDFUNCTION A //  "Invert"       Additive Inverse            AKA: Negation
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION sub3(VecA REF AS Vec3, VecB REF AS Vec3) // 'VecA' - 'VecB'
-    Result AS Vec3
-    Result.x = VecA.x - VecB.x
-    Result.y = VecA.y - VecB.y
-    Result.z = VecA.z - VecB.z
-ENDFUNCTION Result
+FUNCTION cmp3(A AS vec3):  A.x=(1.0-A.x)  :  A.y=(1.0-A.y)  :  A.z=(1.0-A.z)  :ENDFUNCTION A //  "Complement"   Complimentary Inverse
 
+FUNCTION rcp3(A AS vec3):  A.x=(1.0/A.x)  :  A.y=(1.0/A.y)  :  A.z=(1.0/A.z)  :ENDFUNCTION A //  "Reciprocal"   Multiplicative Inverse
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION sub3f(VecA REF AS Vec3, FltA AS FLOAT) // 'VecA' - 'FltA'
-    Result AS Vec3
-    Result.x = VecA.x - FltA
-    Result.y = VecA.y - FltA
-    Result.z = VecA.z - FltA
-ENDFUNCTION Result
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                          "Length"                AKA: Distance from (0,0,0)
+FUNCTION len3(A AS vec3)
+    A.x = sqrt(A.x*A.x + A.y*A.y + A.z*A.z)
+ENDFUNCTION A.x
 
+//==============================================================================================================================================================
+//                                                                         "Distance"
+FUNCTION dst3(A AS vec3, B REF AS vec3)
+    A.x = B.x - A.x // "Delta_X"
+    A.y = B.y - A.y // "Delta_Y"
+    A.z = B.z - A.z // "Delta_Z"
+    A.x = sqrt(A.x*A.x + A.y*A.y + A.z*A.z) // "Result"
+ENDFUNCTION A.x
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION mul3(VecA REF AS Vec3, VecB REF AS Vec3) // 'VecA' * 'VecB'
-    Result AS Vec3
-    Result.x = VecA.x * VecB.x
-    Result.y = VecA.y * VecB.y
-    Result.z = VecA.z * VecB.z
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION mul3f(VecA REF AS Vec3, FltA AS FLOAT) // 'VecA' * 'FltA'
-    Result AS Vec3
-    Result.x = VecA.x * FltA
-    Result.y = VecA.y * FltA
-    Result.z = VecA.z * FltA
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION div3(VecA REF AS Vec3, VecB REF AS Vec3) // 'VecA' / 'VecB'
-    Result AS Vec3
-    Result.x = VecA.x / VecB.x
-    Result.y = VecA.y / VecB.y
-    Result.z = VecA.z / VecB.z
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION div3f(VecA REF AS Vec3, FltA AS FLOAT) // 'VecA' / 'FltA'
-    Result AS Vec3
-    Result.x = VecA.x / FltA
-    Result.y = VecA.y / FltA
-    Result.z = VecA.z / FltA
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//FUNCTION dlt3(VecA REF AS Vec3, VecB REF AS Vec3) // "Delta"    Vector from 'VecA' to 'VecB'
-//    Result AS Vec3
-//    Result.x = VecB.x - VecA.x
-//    Result.y = VecB.y - VecA.y
-//    Result.z = VecB.z - VecA.z
-//ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION dot3(VecA REF AS Vec3, VecB REF AS Vec3) // 'VecA' dot 'VecB'
-ENDFUNCTION (VecA.x*VecB.x + VecA.y*VecB.y + VecA.z*VecB.z)  //  How much does B overlap with A, relative to A, as a vector1.
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION crs3(VecA REF AS Vec3, VecB REF AS Vec3) //  'VecA' cross 'VecB'
-    Result AS Vec3                                //      How much does B 'cross' with A, relative to A, as a perpendicular vector3.
-    Result.x = (VecA.y*VecB.z - VecA.z*VecB.y)    //          crs(+X, +Y) = +Z     crs({1,0,0}, {0,1,0}) = {0,0,1}
-    Result.y = (VecA.z*VecB.x - VecA.x*VecB.z)    //          crs(+Y, +Z) = +X     crs({0,1,0}, {0,0,1}) = {1,0,0}
-    Result.z = (VecA.x*VecB.y - VecA.y*VecB.x)    //          crs(+Z, +X) = +Y     crs({0,0,1}, {1,0,0}) = {0,1,0}
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION inv3(VecA AS Vec3) // "Invert"         Additive Inverse of 'VecA'.
-    VecA.x = -VecA.x
-    VecA.y = -VecA.y
-    VecA.z = -VecA.z
-ENDFUNCTION VecA
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION cmp3(VecA AS Vec3) // "Complement"     Complimentary Inverse of 'VecA'.
-    VecA.x = 1.0 - VecA.x
-    VecA.y = 1.0 - VecA.y
-    VecA.z = 1.0 - VecA.z
-ENDFUNCTION VecA
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rcp3(VecA AS Vec3) // "Reciprocal"     Multiplicative Inverse of 'VecA'.
-    VecA.x = 1.0 / VecA.x
-    VecA.y = 1.0 / VecA.y
-    VecA.z = 1.0 / VecA.z
-ENDFUNCTION VecA
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION len3(VecA AS Vec3) // "Length" of 'VecA'.  ( aka: Distance from (0,0,0) )
-    VecA.x = sqrt(VecA.x*VecA.x + VecA.y*VecA.y + VecA.z*VecA.z)
-ENDFUNCTION VecA.x
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION dst3(VecA AS Vec3, VecB AS Vec3) // "Distance" between 'VecA' and 'VecB'.
-    VecA.x = VecB.x - VecA.x // "Delta_X"
-    VecA.y = VecB.y - VecA.y // "Delta_Y"
-    VecA.z = VecB.z - VecA.z // "Delta_Z"
-    VecA.x = sqrt(VecA.x*VecA.x + VecA.y*VecA.y + VecA.z*VecA.z) // "Result"
-ENDFUNCTION VecA.x
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION lenthn3(VecA AS Vec3, LengthNew AS FLOAT) // "Lengthen"  'VecA' scaled to 'LengthNew'.
-    IF NOT (VecA.x = 0.0 AND VecA.y = 0.0 AND VecA.z = 0.0) // Avoid Divide-by-Zero.
-        LengthNew = LengthNew / sqrt(VecA.x*VecA.x + VecA.y*VecA.y + VecA.z*VecA.z) // Get Vector Scaler (LengthNew / LengthOld).
-        VecA.x = VecA.x * LengthNew
-        VecA.y = VecA.y * LengthNew
-        VecA.z = VecA.z * LengthNew
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                         "Lengthen"               'A' scaled to 'LengthNew'.
+FUNCTION lenthn3(A AS vec3, LengthNew AS FLOAT)
+    IF NOT (A.x = 0.0 AND A.y = 0.0 AND A.z = 0.0) // Avoid Divide-by-Zero.
+        LengthNew = LengthNew/sqrt(A.x*A.x + A.y*A.y + A.z*A.z) //  (LengthNew / LengthOld)
+        A.x = A.x * LengthNew
+        A.y = A.y * LengthNew
+        A.z = A.z * LengthNew
     ENDIF
-ENDFUNCTION VecA
+ENDFUNCTION A
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION nrm3(VecA AS Vec3) // "Normalize"  'VecA' scaled to length of 1.0.
-    IF NOT (VecA.x = 0.0 AND VecA.y = 0.0 AND VecA.z = 0.0) // Avoid Divide-by-Zero.
-        Length AS FLOAT : Length = 1.0 / sqrt(VecA.x*VecA.x + VecA.y*VecA.y + VecA.z*VecA.z) // Get Vector Scaler (LengthNew / LengthOld).
-        VecA.x = VecA.x * Length
-        VecA.y = VecA.y * Length
-        VecA.z = VecA.z * Length
+//==============================================================================================================================================================
+//                                                                        "Normalize"               'A' scaled to length of 1.0.
+FUNCTION nrm3(A AS vec3)
+    IF NOT (A.x = 0.0 AND A.y = 0.0 AND A.z = 0.0) // Avoid Divide-by-Zero.
+        Length AS FLOAT: Length = 1.0/sqrt(A.x*A.x + A.y*A.y + A.z*A.z) //  (LengthNew / LengthOld)
+        A.x = A.x * Length
+        A.y = A.y * Length
+        A.z = A.z * Length
     ENDIF
-ENDFUNCTION VecA
+ENDFUNCTION A
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                           "Floor"                Each component rounded down.
+FUNCTION flr3(A AS vec3)
+    A.x = floor(A.x)
+    A.y = floor(A.y)
+    A.z = floor(A.z)
+ENDFUNCTION A
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION flr3(VecA AS Vec3) // "Floor"    Each component of 'VecA' rounded down.
-    VecA.x = floor(VecA.x)
-    VecA.y = floor(VecA.y)
-    VecA.z = floor(VecA.z)
-ENDFUNCTION VecA
+//==============================================================================================================================================================
+//                                                                          "Ceiling"               Each component rounded up.
+FUNCTION cil3(A AS vec3)
+    A.x = ceil(A.x)
+    A.y = ceil(A.y)
+    A.z = ceil(A.z)
+ENDFUNCTION A
 
+//==============================================================================================================================================================
+//                                                                           "Round"                Each component rounded to nearest Integer.
+FUNCTION rnd3(A AS vec3)
+    A.x = round(A.x)
+    A.y = round(A.y)
+    A.z = round(A.z)
+ENDFUNCTION A
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION cil3(VecA AS Vec3) // "Ceiling"  Each component of 'VecA' rounded up.
-    VecA.x = ceil(VecA.x)
-    VecA.y = ceil(VecA.y)
-    VecA.z = ceil(VecA.z)
-ENDFUNCTION VecA
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rnd3(VecA AS Vec3) // "Round"    Each component of 'VecA' rounded to nearest Integer.
-    VecA.x = round(VecA.x)
-    VecA.y = round(VecA.y)
-    VecA.z = round(VecA.z)
-ENDFUNCTION VecA
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rndto3(VecA REF AS Vec3, RoundTo AS FLOAT) // "Round To"  Each component of 'VecA' rounded to nearest multiple of 'RoundTo'.
-    Result AS Vec3
-    Result.x = fmod(VecA.x, RoundTo)
-    Result.y = fmod(VecA.y, RoundTo)
-    Result.z = fmod(VecA.z, RoundTo)
-    Threshold AS FLOAT : Threshold = RoundTo * 0.5
-    IF     (Result.x > 0.0): IF (Result.x >=  Threshold): Result.x = VecA.x + RoundTo -     Result.x  :ELSE: Result.x = VecA.x -     Result.x  :ENDIF
-    ELSEIF (Result.x < 0.0): IF (Result.x <= -Threshold): Result.x = VecA.x - RoundTo + abs(Result.x) :ELSE: Result.x = VecA.x + abs(Result.x) :ENDIF
-    ELSE                                                : Result.x = VecA.x
+//==============================================================================================================================================================
+//                                                                         "Round To"               Each component rounded to nearest multiple of 'RoundTo'.
+FUNCTION rndto3(A REF AS vec3, RoundTo AS FLOAT)
+    Result AS vec3
+    Result.x = fmod(A.x, RoundTo)
+    Result.y = fmod(A.y, RoundTo)
+    Result.z = fmod(A.z, RoundTo)
+    Threshold AS FLOAT: Threshold = RoundTo * 0.5
+    IF     (Result.x > 0.0): IF (Result.x >=  Threshold): Result.x = A.x + RoundTo -     Result.x  :ELSE: Result.x = A.x -     Result.x  :ENDIF
+    ELSEIF (Result.x < 0.0): IF (Result.x <= -Threshold): Result.x = A.x - RoundTo + abs(Result.x) :ELSE: Result.x = A.x + abs(Result.x) :ENDIF
+    ELSE                                                : Result.x = A.x
     ENDIF
-    IF     (Result.y > 0.0): IF (Result.y >=  Threshold): Result.y = VecA.y + RoundTo -     Result.y  :ELSE: Result.y = VecA.y -     Result.y  :ENDIF
-    ELSEIF (Result.y < 0.0): IF (Result.y <= -Threshold): Result.y = VecA.y - RoundTo + abs(Result.y) :ELSE: Result.y = VecA.y + abs(Result.y) :ENDIF
-    ELSE                                                : Result.y = VecA.y
+    IF     (Result.y > 0.0): IF (Result.y >=  Threshold): Result.y = A.y + RoundTo -     Result.y  :ELSE: Result.y = A.y -     Result.y  :ENDIF
+    ELSEIF (Result.y < 0.0): IF (Result.y <= -Threshold): Result.y = A.y - RoundTo + abs(Result.y) :ELSE: Result.y = A.y + abs(Result.y) :ENDIF
+    ELSE                                                : Result.y = A.y
     ENDIF
-    IF     (Result.z > 0.0): IF (Result.z >=  Threshold): Result.z = VecA.z + RoundTo -     Result.z  :ELSE: Result.z = VecA.z -     Result.z  :ENDIF
-    ELSEIF (Result.z < 0.0): IF (Result.z <= -Threshold): Result.z = VecA.z - RoundTo + abs(Result.z) :ELSE: Result.z = VecA.z + abs(Result.z) :ENDIF
-    ELSE                                                : Result.z = VecA.z
+    IF     (Result.z > 0.0): IF (Result.z >=  Threshold): Result.z = A.z + RoundTo -     Result.z  :ELSE: Result.z = A.z -     Result.z  :ENDIF
+    ELSEIF (Result.z < 0.0): IF (Result.z <= -Threshold): Result.z = A.z - RoundTo + abs(Result.z) :ELSE: Result.z = A.z + abs(Result.z) :ENDIF
+    ELSE                                                : Result.z = A.z
     ENDIF
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                       "Average" of 2
+FUNCTION avg3_2(A AS vec3, B REF AS vec3)
+    A.x = (A.x + B.x) * 0.5
+    A.y = (A.y + B.y) * 0.5
+    A.z = (A.z + B.z) * 0.5
+ENDFUNCTION A
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION avg3_2(VecA REF AS Vec3, VecB REF AS Vec3) // "Average" of 2 Vectors.
-    Result AS Vec3
-    Result.x = (VecA.x + VecB.x) * 0.5
-    Result.y = (VecA.y + VecB.y) * 0.5
-    Result.z = (VecA.z + VecB.z) * 0.5
+//==============================================================================================================================================================
+//                                                                       "Average" of 3
+FUNCTION avg3_3(A AS vec3, B REF AS vec3, C REF AS vec3)
+    A.x = (A.x + B.x + C.x) * ONETHIRD
+    A.y = (A.y + B.y + C.y) * ONETHIRD
+    A.z = (A.z + B.z + C.z) * ONETHIRD
+ENDFUNCTION A
+
+//==============================================================================================================================================================
+//                                                                       "Average" of 4
+FUNCTION avg3_4(A AS vec3, B REF AS vec3, C REF AS vec3, D REF AS vec3)
+    A.x = (A.x + B.x + C.x + D.x) * 0.25
+    A.y = (A.y + B.y + C.y + D.y) * 0.25
+    A.z = (A.z + B.z + C.z + D.z) * 0.25
+ENDFUNCTION A
+
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                         "Reflect"
+//
+//      ref3(  A,  Surface-Normal  )
+//
+FUNCTION ref3(A REF AS vec3, Sn REF AS vec3)
+    Dot AS FLOAT: Dot = (A.x*Sn.x + A.y*Sn.y + A.z*Sn.z)
+    Result AS vec3
+    Result.x = A.x + (Sn.x * Dot * -2.0)
+    Result.y = A.y + (Sn.y * Dot * -2.0)
+    Result.z = A.z + (Sn.z * Dot * -2.0)
 ENDFUNCTION Result
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION avg3_3(VecA REF AS Vec3, VecB REF AS Vec3, VecC REF AS Vec3) // "Average" of 3 Vectors.
-    Result AS Vec3
-    Result.x = (VecA.x + VecB.x + VecC.x) * OneThird
-    Result.y = (VecA.y + VecB.y + VecC.y) * OneThird
-    Result.z = (VecA.z + VecB.z + VecC.z) * OneThird
+//==============================================================================================================================================================
+//                                                                         "Deflect"
+FUNCTION def3(A REF AS vec3, Sn REF AS vec3)
+    Dot AS FLOAT: Dot = (A.x*Sn.x + A.y*Sn.y + A.z*Sn.z)
+    Result AS vec3
+    Result.x = (Sn.x * Dot * 2.0) - A.x
+    Result.y = (Sn.y * Dot * 2.0) - A.y
+    Result.z = (Sn.z * Dot * 2.0) - A.z
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                        "Projection"              Get ClosestPointOnLine.
+FUNCTION prj3(P REF AS vec3, La REF AS vec3, Lb REF AS vec3)
+    dAP_X AS FLOAT: dAP_X = P.x - La.x
+    dAP_Y AS FLOAT: dAP_Y = P.y - La.y
+    dAP_Z AS FLOAT: dAP_Z = P.z - La.z
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION avg3_4(VecA REF AS Vec3, VecB REF AS Vec3, VecC REF AS Vec3, VecD REF AS Vec3) // "Average" of 4 Vectors.
-    Result AS Vec3
-    Result.x = (VecA.x + VecB.x + VecC.x + VecD.x) * 0.25
-    Result.y = (VecA.y + VecB.y + VecC.y + VecD.y) * 0.25
-    Result.z = (VecA.z + VecB.z + VecC.z + VecD.z) * 0.25
+    dAB_X AS FLOAT: dAB_X = Lb.x - La.x
+    dAB_Y AS FLOAT: dAB_Y = Lb.y - La.y
+    dAB_Z AS FLOAT: dAB_Z = Lb.z - La.z
+
+    Dot_AP_AB       AS FLOAT: Dot_AP_AB       = (dAP_X * dAB_X) + (dAP_Y * dAB_Y) + (dAP_Z * dAB_Z)
+    dAB_Length_Sqrd AS FLOAT: dAB_Length_Sqrd = (dAB_X * dAB_X) + (dAB_Y * dAB_Y) + (dAB_Z * dAB_Z)
+
+    //  Distance to NearestPointOnLine, from 'La' as multiple of 'dAB':
+    Dist AS FLOAT: Dist = Dot_AP_AB / dAB_Length_Sqrd
+
+    Result AS vec3
+    Result.x = La.x + (dAB_X * Dist)
+    Result.y = La.y + (dAB_Y * Dist)
+    Result.z = La.z + (dAB_Z * Dist)
 ENDFUNCTION Result
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION ref3(VecA REF AS Vec3, SurfaceNrm REF AS Vec3) // "Reflect"                                        //@@  Add Multiplier?
-    Dot AS FLOAT : Dot = (VecA.x * SurfaceNrm.x) + (VecA.y * SurfaceNrm.y) + (VecA.z * SurfaceNrm.z)
-    Result AS Vec3
-    Result.x = VecA.x + (SurfaceNrm.x * Dot * -2.0)
-    Result.y = VecA.y + (SurfaceNrm.y * Dot * -2.0)
-    Result.z = VecA.z + (SurfaceNrm.z * Dot * -2.0)
+//==============================================================================================================================================================
+//
+//  prj3n(  Point,  Line-Position,  Line-Normal  )
+//
+FUNCTION prj3n(P REF AS vec3, Lp REF AS vec3, Ln REF AS vec3)
+    Dist AS FLOAT: Dist = ((P.x - Lp.x) * Ln.x) + ((P.y - Lp.y) * Ln.y) + ((P.z - Lp.z) * Ln.z)
+    Result AS vec3
+    Result.x = Lp.x + (Ln.x * Dist)
+    Result.y = Lp.y + (Ln.y * Dist)
+    Result.z = Lp.z + (Ln.z * Dist)
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+FUNCTION RandomVec3(Signed AS INTEGER)
+    Pch AS FLOAT
+    Yaw AS FLOAT
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION def3(VecA REF AS Vec3, SurfaceNrm REF AS Vec3) // "Deflect"                                        //@@  Add Multiplier?
-    Dot AS FLOAT : Dot = (VecA.x * SurfaceNrm.x) + (VecA.y * SurfaceNrm.y) + (VecA.z * SurfaceNrm.z)
-    Result AS Vec3
-    Result.x = (SurfaceNrm.x * Dot * 2.0) - VecA.x
-    Result.y = (SurfaceNrm.y * Dot * 2.0) - VecA.y
-    Result.z = (SurfaceNrm.z * Dot * 2.0) - VecA.z
+    IF (Signed)
+        Pch = (0.0 + Random2(0x80000001, 0x7FFFFFFF)) / 0x7FFFFFFF //  -1 to 1
+        Yaw = (0.0 + Random2(0x80000001, 0x7FFFFFFF)) / 0x7FFFFFFF
+    ELSE
+        Pch = (0.0 + Random2(0x00000000, 0x7FFFFFFF)) / 0x7FFFFFFF //   0 to 1
+        Yaw = (0.0 + Random2(0x00000000, 0x7FFFFFFF)) / 0x7FFFFFFF
+    ENDIF
+
+    Pch = asinrad(Pch)
+    Yaw = Yaw * Pi
+
+    CosPch AS FLOAT: CosPch = cosrad(Pch)
+
+    Result AS vec3
+    Result.x =  sinrad(Yaw) *  CosPch
+    Result.y = -sinrad(Pch)
+    Result.z =  cosrad(Yaw) * -CosPch
 ENDFUNCTION Result
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION prj3(Pnt      REF AS Vec3,                       // "Projection"  Get ClosestPointOnLine from 'Pnt'.
-              Lin_PntA REF AS Vec3, Lin_PntB REF AS Vec3)
-    Delta_AP_X AS FLOAT : Delta_AP_X = Pnt.x - Lin_PntA.x  // Pnt.x = ...  @@ Could reuse Pnt var here.
-    Delta_AP_Y AS FLOAT : Delta_AP_Y = Pnt.y - Lin_PntA.y  // Pnt.y = ...
-    Delta_AP_Z AS FLOAT : Delta_AP_Z = Pnt.z - Lin_PntA.z  // Pnt.z = ...
-
-    Delta_AB_X AS FLOAT : Delta_AB_X = Lin_PntB.x - Lin_PntA.x  // Lin_PntB.x = ...  @@ Could reuse Lin_PntB var here.
-    Delta_AB_Y AS FLOAT : Delta_AB_Y = Lin_PntB.y - Lin_PntA.y  // Lin_PntB.y = ...
-    Delta_AB_Z AS FLOAT : Delta_AB_Z = Lin_PntB.z - Lin_PntA.z  // Lin_PntB.z = ...
-
-    Dot_AP_AB            AS FLOAT : Dot_AP_AB            = (Delta_AP_X * Delta_AB_X) + (Delta_AP_Y * Delta_AB_Y) + (Delta_AP_Z * Delta_AB_Z)
-    Delta_AB_Length_Sqrd AS FLOAT : Delta_AB_Length_Sqrd = (Delta_AB_X * Delta_AB_X) + (Delta_AB_Y * Delta_AB_Y) + (Delta_AB_Z * Delta_AB_Z)
-
-    // Get distance, from Lin_PntA as multiple of DltAB, to NearestPointOnLine:
-    Delta_Scalar AS FLOAT : Delta_Scalar = Dot_AP_AB / Delta_AB_Length_Sqrd // (LengthNew / LengthOld)
-
-    Result AS Vec3
-    Result.x = Lin_PntA.x + (Delta_AB_X * Delta_Scalar)
-    Result.y = Lin_PntA.y + (Delta_AB_Y * Delta_Scalar)
-    Result.z = Lin_PntA.z + (Delta_AB_Z * Delta_Scalar)
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION prj3n(Pnt     REF AS Vec3,                      // "Projection"  Get ClosestPointOnLine from 'Pnt'.
-               Lin_Pos REF AS Vec3, Lin_Nrm REF AS Vec3)
-    Dot_AP_AB AS FLOAT : Dot_AP_AB = ((Pnt.x - Lin_Pos.x) * Lin_Nrm.x) + ((Pnt.y - Lin_Pos.y) * Lin_Nrm.y) + ((Pnt.z - Lin_Pos.z) * Lin_Nrm.z)
-    Result AS Vec3
-    Result.x = Lin_Pos.x + (Lin_Nrm.x * Dot_AP_AB)
-    Result.y = Lin_Pos.y + (Lin_Nrm.y * Dot_AP_AB)
-    Result.z = Lin_Pos.z + (Lin_Nrm.z * Dot_AP_AB)
-ENDFUNCTION Result
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION AngleToVec3_OnPlnX(Theta AS FLOAT) // Result will be on plane spanning YZ.
-    Theta = -Theta // Theta is inverted.
-    Result AS Vec3
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+FUNCTION FromPch(Theta AS FLOAT)
+    Theta = -Theta //  Theta is clockwise.
+    Result AS vec3 //  Result will be on plane spanning ZY.
     Result.x =  0.0
     Result.y =  sin(Theta)
     Result.z = -cos(Theta)
 ENDFUNCTION Result
 
-FUNCTION AngleToVec3_OnPlnY(Theta AS FLOAT) // Result will be on plane spanning XZ.
-    Theta = -Theta // Theta is inverted.
-    Result AS Vec3
+FUNCTION FromYaw(Theta AS FLOAT)
+    Theta = -Theta //  Theta is clockwise.
+    Result AS vec3 //  Result will be on plane spanning XZ.
     Result.x =  cos(Theta)
     Result.y = 0.0
     Result.z = -sin(Theta)
 ENDFUNCTION Result
 
-FUNCTION AngleToVec3_OnPlnZ(Theta AS FLOAT) // Result will be on plane spanning XY.
-    Theta = -Theta // Theta is inverted.
-    Result AS Vec3
+FUNCTION FromRol(Theta AS FLOAT)
+    Theta = -Theta //  Theta is clockwise.
+    Result AS vec3 //  Result will be on plane spanning XY.
     Result.x = cos(Theta)
     Result.y = sin(Theta)
     Result.z = 0.0
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//  Pitch & Yaw are clockwise.  Z is inverted.
+//      FromPitchYaw( 0,  0)  ==  ( 0, 0,-1)
+//      FromPitchYaw(90,  0)  ==  ( 0,-1, 0)
+//      FromPitchYaw( 0, 90)  ==  ( 1, 0, 0)
+//
+FUNCTION FromPitchYaw(Pch AS FLOAT, Yaw AS FLOAT)
+    Result AS vec3
+    Result.y = cos(Pch)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION PitchYawToVec3(Pch AS FLOAT, Yaw AS FLOAT)
-    //  Thetas & Z are inverted.
-    //      PitchYawToVec3( 0,  0) = ( 0, 0,-1)
-    //      PitchYawToVec3(90,  0) = ( 0,-1, 0)
-    //      PitchYawToVec3( 0, 90) = ( 1, 0, 0)
-    Result AS Vec3
-    Result.y =             cos(Pch)
     Result.x =  Result.y * sin(Yaw)
     Result.z = -Result.y * cos(Yaw)
-    Result.y =            -sin(Pch) // Actual Y value.
+    Result.y =            -sin(Pch)
 ENDFUNCTION Result
 
+//==============================================================================================================================================================
+//
+//  Rotation(Pitch, Yaw, 0)    FROM    Direction(X, Y, Z)
+//
+FUNCTION RotFromDir(V AS vec3)
+    Result AS vec3
+    V.z = -V.z
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION pch3(Pnt REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around Pivot(0,0,0) on AxisX.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
+    //  Pitch:
+    Result.x = atan2(-V.y, sqrt(V.x*V.x + V.z*V.z))
+
+    //  Yaw:
+    IF (abs(Result.x) >= (PIH-EPSILON))
+        Result.y = 0.0
     ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
-
-        Result AS Vec3
-        Result.x =      Pnt.x                  // 1.0*Pnt.x +  0.0*Pnt.y +   0.0*Pnt.z
-        Result.y = CosT*Pnt.y + -SinT*Pnt.z    // 0.0*Pnt.x + CosT*Pnt.y + -SinT*Pnt.z
-        Result.z = SinT*Pnt.y +  CosT*Pnt.z    // 0.0*Pnt.x + SinT*Pnt.y +  CosT*Pnt.z
+        Result.y = wrapf(atan2(V.x, V.z), 0.0, PI2)
     ENDIF
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                           "Pitch"
+//
+//      pch3(  Point,  Theta  )
+//
+FUNCTION pch3(P REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION pch3p(Pnt REF AS Vec3, Pivot REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around 'Pivot' on AxisX.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        DltX AS FLOAT : DltX = Pnt.x - Pivot.x
-        DltY AS FLOAT : DltY = Pnt.y - Pivot.y
-        DltZ AS FLOAT : DltZ = Pnt.z - Pivot.z
-
-        Result AS Vec3
-        Result.x = Pivot.x  +       DltX                 // Pivot.x  +  1.0*DltX +  0.0*DltY +   0.0*DltZ               @@ Don't need this?
-        Result.y = Pivot.y  +  CosT*DltY + -SinT*DltZ    // Pivot.y  +  0.0*DltX + CosT*DltY + -SinT*DltZ
-        Result.z = Pivot.z  +  SinT*DltY +  CosT*DltZ    // Pivot.z  +  0.0*DltX + SinT*DltY +  CosT*DltZ
-    ENDIF
+    Result AS vec3
+    Result.x =      P.x                                 //  1.0*P.x +  0.0*P.y +   0.0*P.z
+    Result.y = CosT*P.y + -SinT*P.z                     //  0.0*P.x + CosT*P.y + -SinT*P.z
+    Result.z = SinT*P.y +  CosT*P.z                     //  0.0*P.x + SinT*P.y +  CosT*P.z
 ENDFUNCTION Result
 
+//==============================================================================================================================================================
+//
+//      pch3p(  Point,  Pivot,  Theta  )
+//
+FUNCTION pch3p(P REF AS vec3, V REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION yaw3(Pnt REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around Pivot(0,0,0) on AxisY.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        Result AS Vec3
-        Result.x =  CosT*Pnt.x + SinT*Pnt.z    //  CosT*Pnt.x + 0.0*Pnt.y + SinT*Pnt.z
-        Result.y =       Pnt.y                 //   0.0*Pnt.x + 1.0*Pnt.y +  0.0*Pnt.z
-        Result.z = -SinT*Pnt.x + CosT*Pnt.z    // -SinT*Pnt.x + 0.0*Pnt.y + CosT*Pnt.z
-    ENDIF
+    dY AS FLOAT: dY = P.y - V.y
+    dZ AS FLOAT: dZ = P.z - V.z
+
+    Result AS vec3
+    Result.x = P.x                                      //  V.x  +  1.0*dX +  0.0*dY +   0.0*dZ
+    Result.y = V.y  +  CosT*dY + -SinT*dZ               //  V.y  +  0.0*dX + CosT*dY + -SinT*dZ
+    Result.z = V.z  +  SinT*dY +  CosT*dZ               //  V.z  +  0.0*dX + SinT*dY +  CosT*dZ
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                            "Yaw"
+//
+//      yaw3(  Point,  Theta  )
+//
+FUNCTION yaw3(P REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION yaw3p(Pnt REF AS Vec3, Pivot REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around 'Pivot' on AxisY.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        DltX AS FLOAT : DltX = Pnt.x - Pivot.x
-        DltY AS FLOAT : DltY = Pnt.y - Pivot.y
-        DltZ AS FLOAT : DltZ = Pnt.z - Pivot.z
-
-        Result AS Vec3
-        Result.x = Pivot.x  +   CosT*DltX + SinT*DltZ    // Pivot.x  +   CosT*DltX + 0.0*DltY + SinT*DltZ
-        Result.y = Pivot.y  +        DltY                // Pivot.y  +    0.0*DltX + 1.0*DltY +  0.0*DltZ               @@ Don't need this?
-        Result.z = Pivot.z  +  -SinT*DltX + CosT*DltZ    // Pivot.z  +  -SinT*DltX + 0.0*DltY + CosT*DltZ
-    ENDIF
+    Result AS vec3
+    Result.x =  CosT*P.x + SinT*P.z                     //   CosT*P.x + 0.0*P.y + SinT*P.z
+    Result.y =       P.y                                //    0.0*P.x + 1.0*P.y +  0.0*P.z
+    Result.z = -SinT*P.x + CosT*P.z                     //  -SinT*P.x + 0.0*P.y + CosT*P.z
 ENDFUNCTION Result
 
+//==============================================================================================================================================================
+//
+//      yaw3p(  Point,  Pivot,  Theta  )
+//
+FUNCTION yaw3p(P REF AS vec3, V REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rol3(Pnt REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around Pivot(0,0,0) on AxisZ.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        Result AS Vec3
-        Result.x = CosT*Pnt.x + -SinT*Pnt.y    // CosT*Pnt.x + -SinT*Pnt.y + 0.0*Pnt.z
-        Result.y = SinT*Pnt.x +  CosT*Pnt.y    // SinT*Pnt.x +  CosT*Pnt.y + 0.0*Pnt.z
-        Result.z =      Pnt.z                  //  0.0*Pnt.x +   0.0*Pnt.y + 1.0*Pnt.z
-    ENDIF
+    dX AS FLOAT: dX = P.x - V.x
+    dZ AS FLOAT: dZ = P.z - V.z
+
+    Result AS vec3
+    Result.x = V.x  +   CosT*dX + SinT*dZ               //  V.x  +   CosT*dX + 0.0*dY + SinT*dZ
+    Result.y = P.y                                      //  V.y  +    0.0*dX + 1.0*dY +  0.0*dZ
+    Result.z = V.z  +  -SinT*dX + CosT*dZ               //  V.z  +  -SinT*dX + 0.0*dY + CosT*dZ
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                           "Roll"
+//
+//      rol3(  Point,  Theta  )
+//
+FUNCTION rol3(P REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rol3p(Pnt REF AS Vec3, Pivot REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around 'Pivot' on AxisZ.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        CosT AS FLOAT : CosT = cos(Theta)
-        SinT AS FLOAT : SinT = sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        DltX AS FLOAT : DltX = Pnt.x - Pivot.x
-        DltY AS FLOAT : DltY = Pnt.y - Pivot.y
-        DltZ AS FLOAT : DltZ = Pnt.z - Pivot.z
-
-        Result AS Vec3
-        Result.x = Pivot.x  +  CosT*DltX + -SinT*DltY    // Pivot.x  +  CosT*DltX + -SinT*DltY + 0.0*DltZ
-        Result.y = Pivot.y  +  SinT*DltX +  CosT*DltY    // Pivot.y  +  SinT*DltX +  CosT*DltY + 0.0*DltZ
-        Result.z = Pivot.z  +       DltZ                 // Pivot.z  +   0.0*DltX +   0.0*DltY + 1.0*DltZ               @@ Don't need this?
-    ENDIF
+    Result AS vec3
+    Result.x = CosT*P.x + -SinT*P.y                     //  CosT*P.x + -SinT*P.y + 0.0*P.z
+    Result.y = SinT*P.x +  CosT*P.y                     //  SinT*P.x +  CosT*P.y + 0.0*P.z
+    Result.z =      P.z                                 //   0.0*P.x +   0.0*P.y + 1.0*P.z
 ENDFUNCTION Result
 
+//==============================================================================================================================================================
+//
+//      rol3p(  Point,  Pivot,  Theta  )
+//
+FUNCTION rol3p(P REF AS vec3, V REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rot3(Pnt REF AS Vec3, Axis REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around Pivot(0,0,0) on 'Axis' by 'Theta'.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        iCosT AS FLOAT : iCosT = 1.0-cos(Theta)
-         CosT AS FLOAT :  CosT =     cos(Theta)
-         SinT AS FLOAT :  SinT =     sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+    CosT AS FLOAT: CosT = cos(Theta)
+    SinT AS FLOAT: SinT = sin(Theta)
 
-        Result AS Vec3
-        Result.x = ( Pnt.x * (Axis.x*Axis.x*iCosT +        CosT) )  +  ( Pnt.y * (Axis.y*Axis.x*iCosT - Axis.z*SinT) )  +  ( Pnt.z * (Axis.z*Axis.x*iCosT + Axis.y*SinT) )
-        Result.y = ( Pnt.x * (Axis.x*Axis.y*iCosT + Axis.z*SinT) )  +  ( Pnt.y * (Axis.y*Axis.y*iCosT +        CosT) )  +  ( Pnt.z * (Axis.z*Axis.y*iCosT - Axis.x*SinT) )
-        Result.z = ( Pnt.x * (Axis.x*Axis.z*iCosT - Axis.y*SinT) )  +  ( Pnt.y * (Axis.y*Axis.z*iCosT + Axis.x*SinT) )  +  ( Pnt.z * (Axis.z*Axis.z*iCosT +        CosT) )
-    ENDIF
+    dX AS FLOAT: dX = P.x - V.x
+    dY AS FLOAT: dY = P.y - V.y
+
+    Result AS vec3
+    Result.x = V.x  +  CosT*dX + -SinT*dY               //  V.x  +  CosT*dX + -SinT*dY + 0.0*dZ
+    Result.y = V.y  +  SinT*dX +  CosT*dY               //  V.y  +  SinT*dX +  CosT*dY + 0.0*dZ
+    Result.z = P.z                                      //  V.z  +   0.0*dX +   0.0*dY + 1.0*dZ
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//                                                                         "Rotation"
+//
+//      rot3(  Point,  Axis,  Theta  )
+//
+FUNCTION rot3(P REF AS vec3, A REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rot3p(Pnt REF AS Vec3, Pivot REF AS Vec3, Axis REF AS Vec3, Theta AS FLOAT) // "Rotate" 'Point' around 'Pivot' on 'Axis' by 'Theta'.
-    IF (Theta = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        Theta = -Theta // Theta is inverted.
-        iCosT AS FLOAT : iCosT = 1.0-cos(Theta)
-         CosT AS FLOAT :  CosT =     cos(Theta)
-         SinT AS FLOAT :  SinT =     sin(Theta)
+    Theta = -Theta //  Theta is clockwise.
+     CosT AS FLOAT:  CosT = cos(Theta)
+    iCosT AS FLOAT: iCosT = 1.0-CosT
+     SinT AS FLOAT:  SinT = sin(Theta)
 
-        DltX AS FLOAT : DltX = Pnt.x - Pivot.x  //  'Pnt' in LocalSpace.
-        DltY AS FLOAT : DltY = Pnt.y - Pivot.y
-        DltZ AS FLOAT : DltZ = Pnt.z - Pivot.z
-
-        Result AS Vec3
-        Result.x = Pivot.x  +  ( DltX * (Axis.x*Axis.x * iCosT +        CosT) )  +  ( DltY * (Axis.y*Axis.x * iCosT - Axis.z*SinT) )  +  ( DltZ * (Axis.z*Axis.x * iCosT + Axis.y*SinT) )
-        Result.y = Pivot.y  +  ( DltX * (Axis.x*Axis.y * iCosT + Axis.z*SinT) )  +  ( DltY * (Axis.y*Axis.y * iCosT +        CosT) )  +  ( DltZ * (Axis.z*Axis.y * iCosT - Axis.x*SinT) )
-        Result.z = Pivot.z  +  ( DltX * (Axis.x*Axis.z * iCosT - Axis.y*SinT) )  +  ( DltY * (Axis.y*Axis.z * iCosT + Axis.x*SinT) )  +  ( DltZ * (Axis.z*Axis.z * iCosT +        CosT) )
-    ENDIF
+    Result AS vec3
+    Result.x = P.x*(A.x*A.x*iCosT +     CosT)  +  P.y*(A.y*A.x*iCosT - A.z*SinT)  +  P.z*(A.z*A.x*iCosT + A.y*SinT)
+    Result.y = P.x*(A.x*A.y*iCosT + A.z*SinT)  +  P.y*(A.y*A.y*iCosT +     CosT)  +  P.z*(A.z*A.y*iCosT - A.x*SinT)
+    Result.z = P.x*(A.x*A.z*iCosT - A.y*SinT)  +  P.y*(A.y*A.z*iCosT + A.x*SinT)  +  P.z*(A.z*A.z*iCosT +     CosT)
 ENDFUNCTION Result
 
+//==============================================================================================================================================================
+//
+//      rot3p(  Point,  Pivot,  Axis,  Theta  )
+//
+FUNCTION rot3p(P REF AS vec3, V REF AS vec3, A REF AS vec3, Theta AS FLOAT)
+    IF (Theta = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION rot3m(Pnt REF AS Vec3, ThetaVec REF AS Vec3) // "Rotate" 'Point' around Pivot(0,0,0) by 'Theta(Pitch, Yaw, Roll)'.       Simultaneous Multi-Axis Angular Rotation.
-    IF (ThetaVec.x = 0.0 AND ThetaVec.y = 0.0 AND ThetaVec.z = 0.0)
-        EXITFUNCTION Pnt
-    ELSE
-        // Derive singular rotation 'Theta'. (Length of 'ThetaVec'.)
-        Theta AS FLOAT : Theta = -sqrt(ThetaVec.x*ThetaVec.x + ThetaVec.y*ThetaVec.y + ThetaVec.z*ThetaVec.z) // Theta is inverted.
+    Theta = -Theta //  Theta is clockwise.
+     CosT AS FLOAT:  CosT = cos(Theta)
+    iCosT AS FLOAT: iCosT = 1.0-CosT
+     SinT AS FLOAT:  SinT = sin(Theta)
 
-        iCosT AS FLOAT : iCosT = 1.0-cos(Theta) // "Complimentary-Inverse Cosine Theta".
-         CosT AS FLOAT :  CosT =     cos(Theta)
-         SinT AS FLOAT :  SinT =     sin(Theta)
+    //  Point in Pivot LocalSpace:
+    dX AS FLOAT: dX = P.x - V.x
+    dY AS FLOAT: dY = P.y - V.y
+    dZ AS FLOAT: dZ = P.z - V.z
 
-        // Derive singular rotation 'Axis'. ('ThetaVec' normalized.)
-        ThetaRcp AS FLOAT : ThetaRcp = 1.0 / Theta
-        Axis_X AS FLOAT : Axis_X = ThetaVec.x * ThetaRcp
-        Axis_Y AS FLOAT : Axis_Y = ThetaVec.y * ThetaRcp
-        Axis_Z AS FLOAT : Axis_Z = ThetaVec.z * ThetaRcp
-
-        Result AS Vec3
-        Result.x = ( Pnt.x * (Axis_X*Axis_X * iCosT +        CosT) )  +  ( Pnt.y * (Axis_Y*Axis_X * iCosT - Axis_Z*SinT) )  +  ( Pnt.z * (Axis_Z*Axis_X * iCosT + Axis_Y*SinT) )
-        Result.y = ( Pnt.x * (Axis_X*Axis_Y * iCosT + Axis_Z*SinT) )  +  ( Pnt.y * (Axis_Y*Axis_Y * iCosT +        CosT) )  +  ( Pnt.z * (Axis_Z*Axis_Y * iCosT - Axis_X*SinT) )
-        Result.z = ( Pnt.x * (Axis_X*Axis_Z * iCosT - Axis_Y*SinT) )  +  ( Pnt.y * (Axis_Y*Axis_Z * iCosT + Axis_X*SinT) )  +  ( Pnt.z * (Axis_Z*Axis_Z * iCosT +        CosT) )
-    ENDIF
+    Result AS vec3
+    Result.x = V.x  +  dX*(A.x*A.x * iCosT +     CosT)  +  dY*(A.y*A.x * iCosT - A.z*SinT)  +  dZ*(A.z*A.x * iCosT + A.y*SinT)
+    Result.y = V.y  +  dX*(A.x*A.y * iCosT + A.z*SinT)  +  dY*(A.y*A.y * iCosT +     CosT)  +  dZ*(A.z*A.y * iCosT - A.x*SinT)
+    Result.z = V.z  +  dX*(A.x*A.z * iCosT - A.y*SinT)  +  dY*(A.y*A.z * iCosT + A.x*SinT)  +  dZ*(A.z*A.z * iCosT +     CosT)
 ENDFUNCTION Result
 
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//  Simultaneous Multi-Axis Rotation.
+//
+//      rot3m(  Point,  Theta(Pitch, Yaw, Roll)  )
+//
+FUNCTION rot3m(P REF AS vec3, ThetaV REF AS vec3)
+    IF (ThetaV.x = 0.0 AND ThetaV.y = 0.0 AND ThetaV.z = 0.0) THEN EXITFUNCTION P
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION bulkrot3p(Points REF AS Vec3[], Pivot REF AS Vec3, Axis REF AS Vec3, Theta AS FLOAT)
-    //@@  TODO.
-    //      Rotate Array of Points.
-ENDFUNCTION
+    //  Derive singular rotation Theta. (Length of 'ThetaV'.)
+    Theta AS FLOAT: Theta = -sqrt(ThetaV.x*ThetaV.x + ThetaV.y*ThetaV.y + ThetaV.z*ThetaV.z) //  Theta is clockwise.
 
+    //  Derive singular rotation Axis. ('ThetaV' normalized.)
+    ThetaRcp AS FLOAT: ThetaRcp = 1.0 / Theta
+    Ax AS FLOAT: Ax = ThetaV.x * ThetaRcp
+    Ay AS FLOAT: Ay = ThetaV.y * ThetaRcp
+    Az AS FLOAT: Az = ThetaV.z * ThetaRcp
+
+     CosT AS FLOAT:  CosT = cos(Theta)
+    iCosT AS FLOAT: iCosT = 1.0-CosT
+     SinT AS FLOAT:  SinT = sin(Theta)
+
+    Result AS vec3
+    Result.x = P.x*(Ax*Ax * iCosT +    CosT)  +  P.y*(Ay*Ax * iCosT - Az*SinT)  +  P.z*(Az*Ax * iCosT + Ay*SinT)
+    Result.y = P.x*(Ax*Ay * iCosT + Az*SinT)  +  P.y*(Ay*Ay * iCosT +    CosT)  +  P.z*(Az*Ay * iCosT - Ax*SinT)
+    Result.z = P.x*(Ax*Az * iCosT - Ay*SinT)  +  P.y*(Ay*Az * iCosT + Ax*SinT)  +  P.z*(Az*Az * iCosT +    CosT)
+ENDFUNCTION Result
