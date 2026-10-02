@@ -1,69 +1,106 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLOBAL DRAW2_INVERT_Y AS INTEGER = 0 // SetViewOffset(0,-VirtualResolutionY)
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//  If "DRAW2_INVERT_Y = true", then use this:
+//
+//      SetViewOffset(0, -VirtualResolutionY)
+//
+GLOBAL DRAW2_INVERT_Y AS INTEGER = 0
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION DrawPoint(Pnt_Pos REF AS Vec2, Size AS FLOAT, ClrABGR AS INTEGER)
-    IF NOT DRAW2_INVERT_Y : DrawEllipse( Pnt_Pos.x, Pnt_Pos.y,  Size,Size,  ClrABGR,ClrABGR, 1 )
-    ELSE                  : DrawEllipse( Pnt_Pos.x,-Pnt_Pos.y,  Size,Size,  ClrABGR,ClrABGR, 1 )
-    ENDIF
-ENDFUNCTION
-FUNCTION DrawPointV(Pnt_Pos REF AS Vec2, Size AS FLOAT, ClrABGR AS INTEGER) // Works with SetViewOffset(X, Y).
-    IF NOT DRAW2_INVERT_Y : DrawEllipse( WorldToScreenX(Pnt_Pos.x),WorldToScreenY( Pnt_Pos.y),  Size,Size,  ClrABGR,ClrABGR, 1 )
-    ELSE                  : DrawEllipse( WorldToScreenX(Pnt_Pos.x),WorldToScreenY(-Pnt_Pos.y),  Size,Size,  ClrABGR,ClrABGR, 1 )
-    ENDIF
-ENDFUNCTION
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION DrawPixel(Pnt_Pos REF AS Vec2, ClrABGR AS INTEGER)
-    IF NOT DRAW2_INVERT_Y : DrawBox( floor(Pnt_Pos.x),  floor(Pnt_Pos.y),  floor(Pnt_Pos.x)+0.99,  floor(Pnt_Pos.y)+0.99,  ClrABGR,ClrABGR,ClrABGR,ClrABGR, 1 )
-    ELSE                  : DrawBox( floor(Pnt_Pos.x), -floor(Pnt_Pos.y),  floor(Pnt_Pos.x)+0.99, -floor(Pnt_Pos.y)-0.99,  ClrABGR,ClrABGR,ClrABGR,ClrABGR, 1 )
-    ENDIF
-ENDFUNCTION
-FUNCTION DrawPixel2(Pnt_Pos REF AS Vec2, ClrABGR AS INTEGER)
-    IF NOT DRAW2_INVERT_Y : DrawEllipse( floor(Pnt_Pos.x)+0.5, floor(Pnt_Pos.y)+0.5,  0.4,0.4,  ClrABGR,ClrABGR, 1 )
-    ELSE                  : DrawEllipse( floor(Pnt_Pos.x)+0.5,-floor(Pnt_Pos.y)-0.5,  0.4,0.4,  ClrABGR,ClrABGR, 1 )
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//      DrawPoint(  Point,  Size,  ColorABGR  )
+//
+FUNCTION DrawPoint(P REF AS Vec2, Ps AS FLOAT, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawEllipse(P.x, P.y,  Ps,Ps,  C,C, 1)
+    ELSE                   : DrawEllipse(P.x,-P.y,  Ps,Ps,  C,C, 1)
     ENDIF
 ENDFUNCTION
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION DrawLine_(PntA_Pos REF AS Vec2, PntB_Pos REF AS Vec2, ClrABGR  AS INTEGER )
-    IF NOT DRAW2_INVERT_Y : DrawLine( PntA_Pos.x, PntA_Pos.y,  PntB_Pos.x, PntB_Pos.y,  ClrABGR,ClrABGR )
-    ELSE                  : DrawLine( PntA_Pos.x,-PntA_Pos.y,  PntB_Pos.x,-PntB_Pos.y,  ClrABGR,ClrABGR )
-    ENDIF
-ENDFUNCTION
-FUNCTION DrawLineV(PntA_Pos REF AS Vec2, PntB_Pos REF AS Vec2, ClrABGR  AS INTEGER ) // Works with SetViewOffset(X, Y).
-    IF NOT DRAW2_INVERT_Y : DrawLine( WorldToScreenX(PntA_Pos.x),WorldToScreenY( PntA_Pos.y),  WorldToScreenX(PntB_Pos.x),WorldToScreenY( PntB_Pos.y),  ClrABGR,ClrABGR )
-    ELSE                  : DrawLine( WorldToScreenX(PntA_Pos.x),WorldToScreenY(-PntA_Pos.y),  WorldToScreenX(PntB_Pos.x),WorldToScreenY(-PntB_Pos.y),  ClrABGR,ClrABGR )
-    ENDIF
-ENDFUNCTION
-FUNCTION DrawLineC(PntA_Pos REF AS Vec2,
-                   PntB_Pos REF AS Vec2,
-                   Clr      REF AS RGBA )
-    ClrABGR AS INTEGER : ClrABGR = (Clr.a << 24) + (Clr.b << 16) + (Clr.g <<  8) + Clr.r
-    IF NOT DRAW2_INVERT_Y : DrawLine( PntA_Pos.x, PntA_Pos.y,  PntB_Pos.x, PntB_Pos.y,  ClrABGR,ClrABGR )
-    ELSE                  : DrawLine( PntA_Pos.x,-PntA_Pos.y,  PntB_Pos.x,-PntB_Pos.y,  ClrABGR,ClrABGR )
+//==============================================================================================================================================================
+//
+//  Works with SetViewOffset(X, Y).
+//
+//      DrawPointV(  Point,  Size,  ColorABGR  )
+//
+FUNCTION DrawPointV(P REF AS Vec2, Ps AS FLOAT, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawEllipse( WorldToScreenX(P.x),WorldToScreenY( P.y),  Ps,Ps,  C,C, 1 )
+    ELSE                   : DrawEllipse( WorldToScreenX(P.x),WorldToScreenY(-P.y),  Ps,Ps,  C,C, 1 )
     ENDIF
 ENDFUNCTION
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FUNCTION DrawCircle(Cir_Pos REF AS Vec2, Cir_Rds AS FLOAT, ClrABGR AS INTEGER )
-    IF NOT DRAW2_INVERT_Y : DrawEllipse( Cir_Pos.x,  Cir_Pos.y,  Cir_Rds,Cir_Rds,  ClrABGR,ClrABGR,  0 )
-    ELSE                  : DrawEllipse( Cir_Pos.x, -Cir_Pos.y,  Cir_Rds,Cir_Rds,  ClrABGR,ClrABGR,  0 )
-    ENDIF
-ENDFUNCTION
-FUNCTION DrawCircleV(Cir_Pos REF AS Vec2, Cir_Rds AS FLOAT, ClrABGR AS INTEGER )
-    IF NOT DRAW2_INVERT_Y : DrawEllipse( WorldToScreenX(Cir_Pos.x), WorldToScreenY( Cir_Pos.y),  Cir_Rds,Cir_Rds,  ClrABGR,ClrABGR,  0 )
-    ELSE                  : DrawEllipse( WorldToScreenX(Cir_Pos.x), WorldToScreenY(-Cir_Pos.y),  Cir_Rds,Cir_Rds,  ClrABGR,ClrABGR,  0 )
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//      DrawPixel(  PixelCoord,  ColorABGR  )
+//
+FUNCTION DrawPixel(P REF AS Vec2, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawBox( floor(P.x),  floor(P.y),  floor(P.x)+0.99,  floor(P.y)+0.99,  C,C,C,C, 1 )
+    ELSE                   : DrawBox( floor(P.x), -floor(P.y),  floor(P.x)+0.99, -floor(P.y)-0.99,  C,C,C,C, 1 )
     ENDIF
 ENDFUNCTION
 
+//==============================================================================================================================================================
+//
+//      DrawPixel2(  PixelCoord,  ColorABGR  )
+//
+FUNCTION DrawPixel2(P REF AS Vec2, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawEllipse( floor(P.x)+0.5, floor(P.y)+0.5,  0.4,0.4,  C,C, 1 )
+    ELSE                   : DrawEllipse( floor(P.x)+0.5,-floor(P.y)-0.5,  0.4,0.4,  C,C, 1 )
+    ENDIF
+ENDFUNCTION
+
+
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//      DrawLine_(  LinePointA,  LinePointB,  ColorABGR  )
+//
+FUNCTION DrawLine_(La REF AS Vec2, Lb REF AS Vec2, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawLine( La.x, La.y,  Lb.x, Lb.y,  C,C )
+    ELSE                   : DrawLine( La.x,-La.y,  Lb.x,-Lb.y,  C,C )
+    ENDIF
+ENDFUNCTION
+
+//==============================================================================================================================================================
+//  Works with SetViewOffset(X, Y).
+//
+//      DrawLineV(  LinePointA,  LinePointB,  ColorABGR  )
+//
+FUNCTION DrawLineV(La REF AS Vec2, Lb REF AS Vec2, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawLine( WorldToScreenX(La.x),WorldToScreenY( La.y),  WorldToScreenX(Lb.x),WorldToScreenY( Lb.y),  C,C )
+    ELSE                   : DrawLine( WorldToScreenX(La.x),WorldToScreenY(-La.y),  WorldToScreenX(Lb.x),WorldToScreenY(-Lb.y),  C,C )
+    ENDIF
+ENDFUNCTION
+
+//==============================================================================================================================================================
+FUNCTION DrawLineC(La REF AS Vec2, Lb REF AS Vec2, Clr REF AS RGBA)
+    C AS INTEGER: C = (Clr.a << 24) + (Clr.b << 16) + (Clr.g <<  8) + Clr.r
+    IF NOT (DRAW2_INVERT_Y): DrawLine( La.x, La.y,  Lb.x, Lb.y,  C,C )
+    ELSE                   : DrawLine( La.x,-La.y,  Lb.x,-Lb.y,  C,C )
+    ENDIF
+ENDFUNCTION
+
+
+//##############################################################################################################################################################
+//##############################################################################################################################################################
+//
+//      DrawCircle(  CirclePosition,  CircleRadius,  ColorABGR  )
+//
+FUNCTION DrawCircle(Cp REF AS Vec2, Cr AS FLOAT, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawEllipse( Cp.x,  Cp.y,  Cr,Cr,  C,C,  0 )
+    ELSE                   : DrawEllipse( Cp.x, -Cp.y,  Cr,Cr,  C,C,  0 )
+    ENDIF
+ENDFUNCTION
+
+//==============================================================================================================================================================
+//
+//      DrawCircleV(  CirclePosition,  CircleRadius,  ColorABGR  )
+//
+FUNCTION DrawCircleV(Cp REF AS Vec2, Cr AS FLOAT, C AS INTEGER)
+    IF NOT (DRAW2_INVERT_Y): DrawEllipse( WorldToScreenX(Cp.x), WorldToScreenY( Cp.y),  Cr,Cr,  C,C,  0 )
+    ELSE                   : DrawEllipse( WorldToScreenX(Cp.x), WorldToScreenY(-Cp.y),  Cr,Cr,  C,C,  0 )
+    ENDIF
+ENDFUNCTION
